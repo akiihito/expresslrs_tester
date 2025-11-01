@@ -47,24 +47,43 @@ sudo raspi-config
 Raspberry Pi 3以降では、420kbpsの高速通信のためBluetoothを無効化する必要があります：
 
 ```bash
-sudo nano /boot/config.txt
+sudo nano /boot/firmware/config.txt
 ```
 
 以下の行を追加：
 ```
 dtoverlay=disable-bt
-enable_uart=1
 ```
 
-保存して再起動後、以下のコマンドを実行：
+保存して再起動後、以下のコマンドを実行（いらないかも）：
 ```bash
 sudo systemctl disable hciuart
 ```
 
-### 3. Pythonパッケージのインストール
+### 3. Python仮想環境の作成とパッケージのインストール
+
+プロジェクトごとに独立したPython環境を作成することを推奨します。
 
 ```bash
+# 仮想環境の作成
+python3 -m venv venv
+
+# 仮想環境の有効化
+source venv/bin/activate
+
+# パッケージのインストール
 pip3 install -r requirements.txt
+```
+
+**注意**: プログラムを実行する際は、毎回仮想環境を有効化する必要があります：
+```bash
+source venv/bin/activate
+python3 crsf_receiver.py
+```
+
+仮想環境を無効化する場合：
+```bash
+deactivate
 ```
 
 ### 4. ユーザー権限の設定
@@ -76,6 +95,12 @@ sudo usermod -a -G dialout $USER
 ログアウトして再ログイン、または再起動してください。
 
 ## 使用方法
+
+### スクリプト使用前に ExpressLRS 送信機と受信機をバインドしておく
+bind 方法については以下の URL を参照してください。
+
+[BetaFPV Nano TX V2 モジュール](https://manuals.plus/ja/betafpv/2at6x-nano-tx-v2-module-manual)
+[BetaFPV Nano Receiver](https://support.betafpv.com/hc/en-us/article_attachments/4403870819737)
 
 ### 基本的な使い方
 
